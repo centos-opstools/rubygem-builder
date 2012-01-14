@@ -6,7 +6,7 @@
 Name:		rubygem-%{gemname}
 Summary: 	Builders for MarkUp
 Version: 	2.1.2
-Release: 	6%{?dist}
+Release: 	7%{?dist}
 Group: 		Development/Languages
 License: 	GPLv2+ or Ruby
 URL: 		http://onestepback.org
@@ -64,6 +64,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.2-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Fri Nov 25 2011 Vít Ondruch <vondruch@redhat.com> - 2.1.2-6
 - Fix FTBFS rhbz#712927.
 
