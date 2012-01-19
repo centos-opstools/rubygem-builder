@@ -1,22 +1,19 @@
-%define ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
-%define gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
-%define gemname builder
-%define geminstdir %{gemdir}/gems/%{gemname}-%{version}
+%define gem_name builder
 
-Name:		rubygem-%{gemname}
+Name:		rubygem-%{gem_name}
 Summary: 	Builders for MarkUp
 Version: 	2.1.2
-Release: 	7%{?dist}
+Release: 	8%{?dist}
 Group: 		Development/Languages
 License: 	GPLv2+ or Ruby
 URL: 		http://onestepback.org
 # Source pulled from http://www.freshports.org/devel/rubygem-builder/, there's more listed
-Source0:	http://rubyforge.rubyuser.de/%{gemname}/%{gemname}-%{version}.gem
+Source0:	http://rubyforge.rubyuser.de/%{gem_name}/%{gem_name}-%{version}.gem
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: 	rubygems
-BuildRequires: 	rubygems
+BuildRequires: rubygems-devel
 BuildArch: 	noarch
-Provides: 	rubygem(%{gemname}) = %{version}
+Provides: 	rubygem(%{gem_name}) = %{version}
 
 %description
 Builder provides a number of builder objects that make creating structured
@@ -29,41 +26,44 @@ XML Markup * XML Events
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}%{gemdir}
-gem install --local --install-dir %{buildroot}%{gemdir} \
+mkdir -p %{buildroot}%{gem_dir}
+gem install --local --install-dir %{buildroot}%{gem_dir} \
             --force --rdoc %{SOURCE0} || \
             echo 'Workaround FTBFS rhbz#712927'
 
-for file in `find %{buildroot}/%{geminstdir} -name "*.rb"`; do
+for file in `find %{buildroot}/%{gem_instdir} -name "*.rb"`; do
     [ ! -z "`head -n 1 $file | grep \"^#!\"`" ] && chmod +x $file
 done
 
 # Convert README to utf8
-strings %{buildroot}/%{geminstdir}/README > %{buildroot}/%{geminstdir}/README.strings
+strings %{buildroot}/%{gem_instdir}/README > %{buildroot}/%{gem_instdir}/README.strings
 
-mv -f %{buildroot}/%{geminstdir}/README.strings %{buildroot}/%{geminstdir}/README
+mv -f %{buildroot}/%{gem_instdir}/README.strings %{buildroot}/%{gem_instdir}/README
 
 # Remove zero-length file
-rm -rf %{buildroot}/%{geminstdir}/%{gemname}-%{version}.gem
+rm -rf %{buildroot}/%{gem_instdir}/%{gem_name}-%{version}.gem
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%{gemdir}/gems/%{gemname}-%{version}/
-%doc %{gemdir}/doc/%{gemname}-%{version}
-%doc %{geminstdir}/CHANGES
-%doc %{geminstdir}/Rakefile
-%doc %{geminstdir}/README
-%doc %{geminstdir}/doc/releases/builder-1.2.4.rdoc
-%doc %{geminstdir}/doc/releases/builder-2.0.0.rdoc
-%doc %{geminstdir}/doc/releases/builder-2.1.1.rdoc
-%{gemdir}/cache/%{gemname}-%{version}.gem
-%{gemdir}/specifications/%{gemname}-%{version}.gemspec
+%{gem_dir}/gems/%{gem_name}-%{version}/
+%doc %{gem_docdir}
+%doc %{gem_instdir}/CHANGES
+%doc %{gem_instdir}/Rakefile
+%doc %{gem_instdir}/README
+%doc %{gem_instdir}/doc/releases/builder-1.2.4.rdoc
+%doc %{gem_instdir}/doc/releases/builder-2.0.0.rdoc
+%doc %{gem_instdir}/doc/releases/builder-2.1.1.rdoc
+%{gem_cache}
+%{gem_spec}
 
 
 %changelog
+* Thu Jan 19 2012 Vít Ondruch <vondruch@redhat.com> - 2.1.2-8
+- Rebuilt for Ruby 1.9.3.
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.2-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
