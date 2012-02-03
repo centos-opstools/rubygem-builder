@@ -3,9 +3,9 @@
 Name:		rubygem-%{gem_name}
 Summary: 	Builders for MarkUp
 Version: 	2.1.2
-Release: 	8%{?dist}
+Release: 	9%{?dist}
 Group: 		Development/Languages
-License: 	GPLv2+ or Ruby
+License: 	MIT
 URL: 		http://onestepback.org
 # Source pulled from http://www.freshports.org/devel/rubygem-builder/, there's more listed
 Source0:	http://rubyforge.rubyuser.de/%{gem_name}/%{gem_name}-%{version}.gem
@@ -61,6 +61,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Feb 03 2012 Vít Ondruch <vondruch@redhat.com> - 2.1.2-9
+- Fixed license.
+
 * Thu Jan 19 2012 Vít Ondruch <vondruch@redhat.com> - 2.1.2-8
 - Rebuilt for Ruby 1.9.3.
 
