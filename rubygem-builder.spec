@@ -3,14 +3,12 @@
 
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
-Version: 3.0.0
+Version: 3.1.3
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
-# https://github.com/jimweirich/builder/pull/15
-Patch0: builder-3.0.0-fix-tests-with-Ruby-1.9.3-where-UTF-16-is-a-supporte.patch
 Requires: ruby(abi) = %{rubyabi}
 Requires: ruby(rubygems)
 # Builder carries copy of Blankslate, which was in the meantime extracted into
@@ -24,7 +22,7 @@ Requires: ruby(rubygems)
 BuildRequires: ruby(abi) = %{rubyabi}
 BuildRequires: rubygems-devel
 BuildRequires: ruby
-BuildRequires: rubygem(test-unit)
+BuildRequires: rubygem(minitest)
 BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
@@ -49,17 +47,9 @@ mkdir -p .%{gem_dir}
 gem install --local --install-dir .%{gem_dir} \
             --force %{SOURCE0}
 
-pushd .%{gem_instdir}
-%patch0 -p1
-popd
-
 %build
 
 %install
-# test_cssbuilder.rb is part of the package just by mistake it seems.
-# https://github.com/jimweirich/builder/pull/25
-rm .%{gem_instdir}/test/test_cssbuilder.rb
-
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
@@ -71,29 +61,15 @@ done
 
 chmod -x %{buildroot}%{gem_instdir}/doc/releases/builder-2.1.1.rdoc
 
-# Convert README.rdoc to utf8
-strings %{buildroot}/%{gem_instdir}/README.rdoc > %{buildroot}/%{gem_instdir}/README.rdoc.strings
-mv -f %{buildroot}/%{gem_instdir}/README.rdoc.strings %{buildroot}/%{gem_instdir}/README.rdoc
-
-# Convert README to utf8
-strings %{buildroot}/%{gem_instdir}/README > %{buildroot}/%{gem_instdir}/README.strings
-mv -f %{buildroot}/%{gem_instdir}/README.strings %{buildroot}/%{gem_instdir}/README
-
 
 %check
 pushd .%{gem_instdir}
-testrb2 -I.:lib test
+testrb -I.:lib test
 popd
 
 %files
 %dir %{gem_instdir}
-# Two inconsitent readmes?
-# https://github.com/jimweirich/builder/issues/22
-%doc %{gem_instdir}/README
-%doc %{gem_instdir}/README.rdoc
-# Seems to be in package just by accident.
-# https://github.com/jimweirich/builder/issues/10
-%exclude %{gem_instdir}/TAGS
+%doc %{gem_instdir}/MIT-LICENSE
 %{gem_libdir}
 %exclude %{gem_cache}
 %{gem_spec}
@@ -101,14 +77,16 @@ popd
 %files doc
 %doc %{gem_docdir}
 %doc %{gem_instdir}/CHANGES
+%doc %{gem_instdir}/README.rdoc
 %doc %{gem_instdir}/Rakefile
-%doc %{gem_instdir}/doc/releases/builder-1.2.4.rdoc
-%doc %{gem_instdir}/doc/releases/builder-2.0.0.rdoc
-%doc %{gem_instdir}/doc/releases/builder-2.1.1.rdoc
-%{gem_instdir}/test
+%doc %{gem_instdir}/doc/
+%{gem_instdir}/test/
 
 
 %changelog
+* Thu Oct 11 2012 Vít Ondruch <vondruch@redhat.com> - 3.1.3-1
+- Update to Builder 3.1.3.
+
 * Wed Jul 18 2012 Vít Ondruch <vondruch@redhat.com> - 3.0.0-1
 - Update to Builder 3.0.0.
 
