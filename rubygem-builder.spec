@@ -3,7 +3,7 @@
 
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
-Version: 3.1.3
+Version: 3.1.4
 Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
@@ -84,6 +84,9 @@ popd
 
 
 %changelog
+* Wed Oct 17 2012 Vít Ondruch <vondruch@redhat.com> - 3.1.4-1
+- Update to Builder 3.1.4.
+
 * Thu Oct 11 2012 Vít Ondruch <vondruch@redhat.com> - 3.1.3-1
 - Update to Builder 3.1.3.
 
