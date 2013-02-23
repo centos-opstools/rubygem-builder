@@ -1,15 +1,14 @@
 %global gem_name builder
-%global rubyabi 1.9.1
 
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
 Version: 3.1.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
-Requires: ruby(abi) = %{rubyabi}
+Requires: ruby(release)
 Requires: ruby(rubygems)
 # Builder carries copy of Blankslate, which was in the meantime extracted into
 # independent gem.
@@ -19,7 +18,7 @@ Requires: ruby(rubygems)
 # https://bugzilla.redhat.com/show_bug.cgi?id=771316
 #
 # Requires: rubygem(blankslate)
-BuildRequires: ruby(abi) = %{rubyabi}
+BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
 BuildRequires: rubygem(minitest)
@@ -43,9 +42,7 @@ Documentation for %{name}
 
 %prep
 %setup -q -c -T
-mkdir -p .%{gem_dir}
-gem install --local --install-dir .%{gem_dir} \
-            --force %{SOURCE0}
+%gem_install -n %{SOURCE0}
 
 %build
 
@@ -64,6 +61,10 @@ chmod -x %{buildroot}%{gem_instdir}/doc/releases/builder-2.1.1.rdoc
 
 %check
 pushd .%{gem_instdir}
+# Test suite is throwing error due to change in default encoding of files
+# in Ruby 2.0.0.
+# https://github.com/jimweirich/builder/issues/37
+sed -i '2 i # encoding: us-ascii' test/test_xchar.rb
 testrb -I.:lib test
 popd
 
@@ -84,6 +85,9 @@ popd
 
 
 %changelog
+* Sat Feb 23 2013 Vít Ondruch <vondruch@redhat.com> - 3.1.4-3
+- Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
