@@ -3,7 +3,7 @@
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
 Version: 3.1.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
@@ -85,6 +85,9 @@ popd
 
 
 %changelog
+* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1.4-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Sat Feb 23 2013 Vít Ondruch <vondruch@redhat.com> - 3.1.4-3
 - Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
 
