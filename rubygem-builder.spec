@@ -2,14 +2,12 @@
 
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
-Version: 3.1.4
-Release: 4%{?dist}
+Version: 3.2.2
+Release: 1%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
 Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
-Requires: ruby(release)
-Requires: ruby(rubygems)
 # Builder carries copy of Blankslate, which was in the meantime extracted into
 # independent gem.
 # https://github.com/jimweirich/builder/issues/24
@@ -21,9 +19,8 @@ Requires: ruby(rubygems)
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
-BuildRequires: rubygem(minitest)
+BuildRequires: rubygem(minitest) < 5
 BuildArch: noarch
-Provides: rubygem(%{gem_name}) = %{version}
 
 %description
 Builder provides a number of builder objects that make creating structured
@@ -61,10 +58,6 @@ chmod -x %{buildroot}%{gem_instdir}/doc/releases/builder-2.1.1.rdoc
 
 %check
 pushd .%{gem_instdir}
-# Test suite is throwing error due to change in default encoding of files
-# in Ruby 2.0.0.
-# https://github.com/jimweirich/builder/issues/37
-sed -i '2 i # encoding: us-ascii' test/test_xchar.rb
 testrb -I.:lib test
 popd
 
@@ -78,13 +71,17 @@ popd
 %files doc
 %doc %{gem_docdir}
 %doc %{gem_instdir}/CHANGES
-%doc %{gem_instdir}/README.rdoc
+%doc %{gem_instdir}/README.md
 %doc %{gem_instdir}/Rakefile
 %doc %{gem_instdir}/doc/
+%doc %{gem_instdir}/rakelib/
 %{gem_instdir}/test/
 
 
 %changelog
+* Tue May 20 2014 Vít Ondruch <vondruch@redhat.com> - 3.2.2-1
+- Update to Builder 3.2.2.
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
