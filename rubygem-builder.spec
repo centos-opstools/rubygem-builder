@@ -3,7 +3,7 @@
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
 Version: 3.2.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
@@ -79,6 +79,9 @@ popd
 
 
 %changelog
+* Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Tue May 20 2014 Vít Ondruch <vondruch@redhat.com> - 3.2.2-1
 - Update to Builder 3.2.2.
 
