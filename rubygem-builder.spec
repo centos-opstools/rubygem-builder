@@ -3,7 +3,7 @@
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
 Version: 3.2.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
@@ -58,7 +58,34 @@ chmod -x %{buildroot}%{gem_instdir}/doc/releases/builder-2.1.1.rdoc
 
 %check
 pushd .%{gem_instdir}
-testrb -I.:lib test
+
+ruby -rminitest/autorun -I.:lib:test - << \EOF
+  module Kernel
+    alias orig_require require
+    remove_method :require
+
+    def require path
+      orig_require path unless path == 'test/unit'
+    end
+  end
+  Test = Minitest
+  module Test
+    class Unit
+      class TestCase
+        alias :assert_raise :assert_raises
+        def assert_nothing_raised
+          yield
+        end
+
+        def assert_not_nil exp, msg=nil
+          msg = message(msg) { "<#{mu_pp(exp)}> expected to not be nil" }
+          assert(!exp.nil?, msg)
+        end
+      end
+    end
+  end
+  Dir.glob "./test/test_*.rb", &method(:require)
+EOF
 popd
 
 %files
@@ -79,6 +106,9 @@ popd
 
 
 %changelog
+* Tue May 26 2015 Josef Stribny <jstribny@redhat.com> - 3.2.2-3
+- Fix tests to run with Minitest
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
