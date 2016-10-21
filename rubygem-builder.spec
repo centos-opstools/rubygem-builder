@@ -19,7 +19,7 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
-BuildRequires: rubygem(minitest) < 5
+BuildRequires: rubygem-minitest
 BuildArch: noarch
 
 %description
@@ -57,6 +57,7 @@ chmod -x %{buildroot}%{gem_instdir}/doc/releases/builder-2.1.1.rdoc
 
 
 %check
+%if 0%{?fedora}
 pushd .%{gem_instdir}
 
 ruby -rminitest/autorun -I.:lib:test - << \EOF
@@ -87,6 +88,7 @@ ruby -rminitest/autorun -I.:lib:test - << \EOF
   Dir.glob "./test/test_*.rb", &method(:require)
 EOF
 popd
+%endif
 
 %files
 %dir %{gem_instdir}
