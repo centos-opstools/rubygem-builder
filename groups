@@ -1,3 +1,5 @@
-# UUID                                  	Group Name
-#
-1ffb3ae297cec73fc13c49663ad8d3baa01f3707	centos-opstools/rubygem-builder-ptl
+# UUID          Group Name
+False 	Non-Interactive Users
+d4c390faa845409ea26c3e29cbfe39883f8221e8       	centos-opstools/rubygem-builder-core
+1ffb3ae297cec73fc13c49663ad8d3baa01f3707        	centos-opstools/rubygem-builder-ptl
+global:Registered-Users		Registered Users
