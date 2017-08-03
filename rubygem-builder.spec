@@ -3,7 +3,7 @@
 Summary: Builders for MarkUp
 Name: rubygem-%{gem_name}
 Version: 3.2.2
-Release: 5%{?dist}
+Release: 6%{?dist}
 Group: Development/Languages
 License: MIT
 URL: http://onestepback.org
@@ -19,8 +19,9 @@ Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
-BuildRequires: rubygem-minitest
+BuildRequires: rubygem(minitest)
 BuildArch: noarch
+Provides: rubygem(%{gem_name}) = %{version}
 
 %description
 Builder provides a number of builder objects that make creating structured
@@ -108,6 +109,9 @@ popd
 
 
 %changelog
+* Thu Aug 03 2017 Sandro Bonazzola <sbonazzo@redhat.com> - 3.2.2-6
+- added Provides for rubygem(builder)
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
